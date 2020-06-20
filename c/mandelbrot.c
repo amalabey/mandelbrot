@@ -4,7 +4,6 @@
 #include <string.h>
 #include <sys/time.h>
 
-
 int get_iterations(uint16_t maxiter, double x, double y)
 {
     double iterX = 0.0;
@@ -23,7 +22,6 @@ int get_iterations(uint16_t maxiter, double x, double y)
 
     return k;
 }
-
 
 void compute_set(double xmin, double xmax,double ymin, double ymax, uint16_t maxiter, 
 int xres, int yres, unsigned char* colors)
@@ -62,6 +60,7 @@ int xres, int yres, unsigned char* colors)
                 color[5] = iterations & 255;
                 memcpy(colorIndex, color, sizeof(color));
             }
+
         }
     }
 }
