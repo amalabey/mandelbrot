@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include <sys/time.h>
+
 
 int get_iterations(uint16_t maxiter, double x, double y)
 {
@@ -103,7 +105,14 @@ int main(int argc, char* argv[])
     // Allocated an array for colors = width * height * 6 byte color code
     int colors_len = yres * xres * 6;
     unsigned char* colors = malloc(colors_len * sizeof(unsigned char));
+
+    struct timeval stop, start;
+    gettimeofday(&start, NULL);
+
     compute_set(xmin, xmax, ymin, ymax, maxiter, xres, yres, colors);
+
+    gettimeofday(&stop, NULL);
+    printf("Computation took %lu ms\n", (stop.tv_sec - start.tv_sec) * 1000 + (stop.tv_usec/1000) - (start.tv_usec/1000)); 
 
     // Write resulting colors to file
     write_file(argv[7], colors, colors_len, xmin, xmax, ymin, ymax, maxiter, xres, yres);
