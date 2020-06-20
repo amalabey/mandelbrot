@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
     compute_set(xmin, xmax, ymin, ymax, maxiter, xres, yres, colors);
 
     // Write resulting colors to file
-    write_file("c-mandelbrot.ppm", colors, colors_len, xmin, xmax, ymin, ymax, maxiter, xres, yres);
+    write_file(argv[7], colors, colors_len, xmin, xmax, ymin, ymax, maxiter, xres, yres);
 
     // Free up allocated memor
     free(colors);
