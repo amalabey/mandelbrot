@@ -1,5 +1,7 @@
 ﻿using System;
-// using System.Diagnostics;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace dotnet
 {
@@ -69,6 +71,19 @@ namespace dotnet
             return colours;
         }
 
+        private static void WriteFile(string fileName, byte[] headerBytes, int[] colorBytes)
+        {
+            using(var fileStream = File.Open(fileName, FileMode.Create))
+            {
+                using (var writer = new BinaryWriter(fileStream))
+                {
+                    writer.Write(headerBytes);
+                    Span<byte> bytes = MemoryMarshal.Cast<int, byte>(colorBytes.AsSpan());
+                    writer.Write(bytes);
+                }
+            }
+        }
+
 
         public static void Main(string[] args)
         {
@@ -84,16 +99,20 @@ namespace dotnet
             double ymax = Double.Parse(args[3]);
             int maxiter = Int16.Parse(args[4]);
             int xres = Int32.Parse(args[5]);
+            string fileName = args[6];
             int yres = (int)((xres*(ymax-ymin))/(xmax-xmin));
 
             // var stopWatch = new StopWatch();
             // stopWatch.Start();
             long start = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-            ComputeSet(xmin, xmax, ymin, ymin, maxiter, xres, yres);
+            var colorBytes = ComputeSet(xmin, xmax, ymin, ymin, maxiter, xres, yres);
             // stopWatch.Stop();
             long end = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
 
             Console.WriteLine("Computation took {0}ms", end-start);
+            string headerText = $"P6\n# Mandelbrot, xmin={xmin}, xmax={xmax}, ymin={ymin}, ymax={ymax}, maxiter={maxiter}\n{xres}\n{yres}\n{(maxiter < 256 ? 256 : maxiter)}\n";
+            byte[] header = new UTF8Encoding(true).GetBytes(headerText);
+            WriteFile(fileName, header, colorBytes);
         }
     }
 }
