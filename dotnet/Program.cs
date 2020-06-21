@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace dotnet
 {
     class Program
     {
+
         private static int GetIterations(int maxiter, double x, double y)
         {
             double iterX = 0.0;
@@ -16,13 +16,14 @@ namespace dotnet
 
             /* iterate the point */
             int k;
-            for (k = 1; k < maxiter && (iterX2 + iterY2 < 4.0); k++) {
-                iterY = 2 * iterX * iterY + y;
+            for (k = 1; k < maxiter && ((iterX2 + iterY2) < 4.0); k++) {
+                iterY = (2 * iterX * iterY) + y;
                 iterX = iterX2 - iterY2 + x;
                 iterX2 = iterX * iterX;
                 iterY2 = iterY * iterY;
             };
 
+            // Console.WriteLine("x={0}, y={1}, k={2}", x, y, k);            
             return k;
         }
 
@@ -41,10 +42,10 @@ namespace dotnet
 
             for (yPixel = 0; yPixel < yres; yPixel++)
             {
-                currentY = ymax - yPixel*pixelHeight;
+                currentY = ymax - (yPixel*pixelHeight);
                 for (xPixel = 0; xPixel < xres; xPixel++)
                 {
-                    currentX = xmin + xPixel*pixelWidth;
+                    currentX = xmin + (xPixel*pixelWidth);
                     int iterations = GetIterations(maxiter, currentX, currentY);
                     
                     int colorIndex = (yPixel*xres*6)+(xPixel*6);
@@ -71,19 +72,23 @@ namespace dotnet
             return colours;
         }
 
-        private static void WriteFile(string fileName, byte[] headerBytes, int[] colorBytes)
+        private static void WriteFile(string fileName, string header, int[] colorBytes)
         {
-            using(var fileStream = File.Open(fileName, FileMode.Create))
+            using(var textWriter = new StreamWriter(fileName))
             {
-                using (var writer = new BinaryWriter(fileStream))
+                textWriter.Write(header);
+                textWriter.Close();
+            }
+            
+            using(var fileStream = File.Open(fileName, FileMode.OpenOrCreate))
+            {
+                using (var binaryWriter = new BinaryWriter(fileStream))
                 {
-                    writer.Write(headerBytes);
                     Span<byte> bytes = MemoryMarshal.Cast<int, byte>(colorBytes.AsSpan());
-                    writer.Write(bytes);
+                    binaryWriter.Write(bytes);
                 }
             }
         }
-
 
         public static void Main(string[] args)
         {
@@ -92,6 +97,8 @@ namespace dotnet
                 Console.WriteLine("Example: dotnet run 0.27085 0.27100 0.004640 0.004810 1000 1024 pic.ppm\n");
                 return;
             }
+
+            // var test = GetIterations(1000, 0.27085004999999995, 0.00481);
 
             double xmin = Double.Parse(args[0]);
             double xmax = Double.Parse(args[1]);
@@ -102,17 +109,13 @@ namespace dotnet
             string fileName = args[6];
             int yres = (int)((xres*(ymax-ymin))/(xmax-xmin));
 
-            // var stopWatch = new StopWatch();
-            // stopWatch.Start();
-            long start = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-            var colorBytes = ComputeSet(xmin, xmax, ymin, ymin, maxiter, xres, yres);
-            // stopWatch.Stop();
-            long end = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-
-            Console.WriteLine("Computation took {0}ms", end-start);
+            var stopWatch = new System.Diagnostics.Stopwatch();
+            stopWatch.Start();
+            var colorBytes = ComputeSet(xmin, xmax, ymin, ymax, maxiter, xres, yres);
+            stopWatch.Stop();
+            Console.WriteLine("Computation took {0}ms", stopWatch.ElapsedMilliseconds);
             string headerText = $"P6\n# Mandelbrot, xmin={xmin}, xmax={xmax}, ymin={ymin}, ymax={ymax}, maxiter={maxiter}\n{xres}\n{yres}\n{(maxiter < 256 ? 256 : maxiter)}\n";
-            byte[] header = new UTF8Encoding(true).GetBytes(headerText);
-            WriteFile(fileName, header, colorBytes);
+            WriteFile(fileName, headerText, colorBytes);
         }
     }
 }
