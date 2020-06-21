@@ -27,11 +27,11 @@ namespace dotnet
             return k;
         }
 
-        private static int[] ComputeSet(double xmin, double xmax, double ymin, double ymax,
+        private static char[] ComputeSet(double xmin, double xmax, double ymin, double ymax,
         int maxiter, int xres, int yres)
         {
             int colorsLength = yres * xres * 6;
-            int[] colours = new int[colorsLength];
+            char[] colours = new char[colorsLength];
 
             // Calculate width and height
             double pixelWidth = (xmax - xmin)/xres;
@@ -52,17 +52,17 @@ namespace dotnet
                     if(iterations >= maxiter)
                     {
                         // interior - color=black
-                        int[] black = {0, 0, 0, 0, 0, 0};
+                        char[] black = {(char)0, (char)0, (char)0, (char)0, (char)0, (char)0};
                         Array.Copy(black, 0, colours, colorIndex, 6);
                     }else
                     {
-                        int[] color = new int[6];
-                        color[0] = iterations >> 8;
-                        color[1] = iterations & 255;
-                        color[2] = iterations >> 8;
-                        color[3] = iterations & 255;
-                        color[4] = iterations >> 8;
-                        color[5] = iterations & 255;
+                        char[] color = new char[6];
+                        color[0] = (char)(iterations >> 8);
+                        color[1] = (char)(iterations & 255);
+                        color[2] = (char)(iterations >> 8);
+                        color[3] = (char)(iterations & 255);
+                        color[4] = (char)(iterations >> 8);
+                        color[5] = (char)(iterations & 255);
                         Array.Copy(color, 0, colours, colorIndex, 6);
                     }
 
@@ -72,7 +72,7 @@ namespace dotnet
             return colours;
         }
 
-        private static void WriteFile(string fileName, string header, int[] colorBytes)
+        private static void WriteFile(string fileName, string header, char[] colorBytes)
         {
             using(var textWriter = new StreamWriter(fileName))
             {
@@ -80,11 +80,11 @@ namespace dotnet
                 textWriter.Close();
             }
             
-            using(var fileStream = File.Open(fileName, FileMode.OpenOrCreate))
+            using(var fileStream = File.Open(fileName, FileMode.Append))
             {
                 using (var binaryWriter = new BinaryWriter(fileStream))
                 {
-                    Span<byte> bytes = MemoryMarshal.Cast<int, byte>(colorBytes.AsSpan());
+                    Span<byte> bytes = MemoryMarshal.Cast<char, byte>(colorBytes.AsSpan());
                     binaryWriter.Write(bytes);
                 }
             }
