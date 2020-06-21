@@ -31,9 +31,7 @@ int xres, int yres, unsigned char* colors)
     double pixelHeight = (ymax-ymin)/yres;
 
     double currentX, currentY; // Current point in the complex plane
-    double iterX, iterY; // Currently iterated point
     int xPixel, yPixel;
-    int iterCounter;
 
     for (yPixel = 0; yPixel < yres; yPixel++)
     {
@@ -42,7 +40,6 @@ int xres, int yres, unsigned char* colors)
         {
             currentX = xmin + xPixel*pixelWidth;
             int iterations = get_iterations(maxiter, currentX, currentY);
-            unsigned char color[6];
             unsigned char* colorIndex = colors + (yPixel*xres*6)+(xPixel*6);
             if(iterations >= maxiter)
             {
