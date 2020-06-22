@@ -84,7 +84,7 @@ int main(int argc, char* argv[])
     const double ymin = -1.0; 
     const double ymax = 1.0;
     const int maxiter = 1000;
-    const int xres = 1024;
+    const int xres = 3000;
     const int yres = (xres*(ymax-ymin))/(xmax-xmin);
 
     // Allocated an array for colors = width * height * 6 byte color code

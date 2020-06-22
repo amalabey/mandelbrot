@@ -6,6 +6,7 @@ namespace dotnet
 {
     class Program
     {
+        private const int ColorsPerPixel = 6;
 
         private static int GetIterations(int maxiter, double x, double y)
         {
@@ -27,11 +28,11 @@ namespace dotnet
             return k;
         }
 
-        private static char[] ComputeSet(double xmin, double xmax, double ymin, double ymax,
+        private static byte[] ComputeSet(double xmin, double xmax, double ymin, double ymax,
         int maxiter, int xres, int yres)
         {
-            int colorsLength = yres * xres * 6;
-            char[] colours = new char[colorsLength];
+            int colorsLength = yres * xres * ColorsPerPixel;
+            byte[] colours = new byte[colorsLength];
 
             // Calculate width and height
             double pixelWidth = (xmax - xmin)/(double)xres;
@@ -48,32 +49,31 @@ namespace dotnet
                     currentX = xmin + ((double)xPixel*pixelWidth);
                     int iterations = GetIterations(maxiter, currentX, currentY);
                     
-                    int colorIndex = (yPixel*xres*6)+(xPixel*6);
+                    int colorIndex = (yPixel*xres*ColorsPerPixel)+(xPixel*ColorsPerPixel);
                     if(iterations >= maxiter)
                     {
                         // interior - color=black
-                        char[] black = {(char)0, (char)0, (char)0, (char)0, (char)0, (char)0};
-                        Array.Copy(black, 0, colours, colorIndex, 6);
+                        byte[] black = {(byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0};
+                        Array.Copy(black, 0, colours, colorIndex, ColorsPerPixel);
                     }else
                     {
-                        char[] color = new char[6];
-                        
-                        color[0] = (char)(iterations >> 8);
-                        color[1] = (char)(iterations & 255);
-                        color[2] = (char)(iterations >> 8);
-                        color[3] = (char)(iterations & 255);
-                        color[4] = (char)(iterations >> 8);
-                        color[5] = (char)(iterations & 255);
-                        Array.Copy(color, 0, colours, colorIndex, 6);
-                    }
+                        byte[] color = new byte[6];
+                        color[0] = (byte)(iterations >> 8);
+                        color[1] = (byte)(iterations & 255);
+                        color[2] = (byte)(iterations >> 8);
+                        color[3] = (byte)(iterations & 255);
+                        color[4] = (byte)(iterations >> 8);
+                        color[5] = (byte)(iterations & 255);
 
+                        Array.Copy(color, 0, colours, colorIndex, ColorsPerPixel);
+                    }
                 }
             }
 
             return colours;
         }
 
-        private static void WriteFile(string fileName, string header, char[] colorBytes)
+        private static void WriteFile(string fileName, string header, byte[] colorBytes)
         {
             using(var textWriter = new StreamWriter(fileName))
             {
@@ -85,7 +85,7 @@ namespace dotnet
             {
                 using (var binaryWriter = new BinaryWriter(fileStream))
                 {
-                    Span<byte> bytes = MemoryMarshal.Cast<char, byte>(colorBytes.AsSpan());
+                    Span<byte> bytes = colorBytes.AsSpan();
                     binaryWriter.Write(bytes);
                 }
             }
@@ -98,7 +98,7 @@ namespace dotnet
             double ymin = -1.0D;
             double ymax = 1.0D;
             int maxiter = 1000;
-            int xres = 1024;
+            int xres = 3000;
             string fileName = "pic.ppm";
             int yres = (int)((xres*(ymax-ymin))/(xmax-xmin));
 
