@@ -5,11 +5,11 @@
    "version": "0.2.0",
    "configurations": [
    {
-       "name": "(gdb) Launch",
+       "name": "Launch C (gdb)",
        "type": "cppdbg",
        "request": "launch",
        "program": "${workspaceFolder}/c/mandelbrot",
-       "args": ["0.27085", "0.27100", "0.004640", "0.004810", "1000", "3000", "pic.ppm"],
+       "args": ["0.27084999999999998", "0.27100000000000002", "0.004640", "0.004810", "1000", "3000", "pic.ppm"],
        "stopAtEntry": false,
        "cwd": "${workspaceFolder}",
        "environment": [],
@@ -25,23 +25,17 @@
    },
 
         {
-            "name": ".NET Core Launch (console)",
+            "name": "Launch dotnetcore",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/dotnet/bin/Debug/netcoreapp3.1/dotnet.dll",
-            "args": ["0.27085", "0.27100", "0.004640", "0.004810", "1000", "3000", "pic.ppm"],
+            "args": ["0.27084999999999998", "0.27100000000000002", "0.004640", "0.004810", "1000", "3000", "pic.ppm"],
             "cwd": "${workspaceFolder}/dotnet",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
             "stopAtEntry": false,
-        },
-        {
-            "name": ".NET Core Attach",
-            "type": "coreclr",
-            "request": "attach",
-            "processId": "${command:pickProcess}"
         }
     ]
 }

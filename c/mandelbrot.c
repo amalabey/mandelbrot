@@ -19,7 +19,8 @@ int get_iterations(uint16_t maxiter, double x, double y)
         iterX2 = iterX * iterX;
         iterY2 = iterY * iterY;
     };
-
+    // printf("x=%f, y =%f, k=%d \n", x, y, k);
+    
     return k;
 }
 
@@ -78,24 +79,12 @@ double ymin, double ymax, int maxiter, int xres, int yres)
 
 int main(int argc, char* argv[])
 {
-    /* Parse the command line arguments. */
-    if (argc != 8) {
-        printf("Usage:   %s <xmin> <xmax> <ymin> <ymax> <maxiter> <xres> <out.ppm>\n", argv[0]);
-        printf("Example: %s 0.27085 0.27100 0.004640 0.004810 1000 1024 pic.ppm\n", argv[0]);
-        exit(EXIT_FAILURE);
-    }
-
-    /* The window in the plane. */
-    const double xmin = atof(argv[1]);
-    const double xmax = atof(argv[2]);
-    const double ymin = atof(argv[3]);
-    const double ymax = atof(argv[4]);
-
-    /* Maximum number of iterations, at most 65535. */
-    const uint16_t maxiter = (unsigned short)atoi(argv[5]);
-
-    /* Image size, width is given, height is computed. */
-    const int xres = atoi(argv[6]);
+    const double xmin = -2.0;
+    const double xmax = 1.0;
+    const double ymin = -1.0; 
+    const double ymax = 1.0;
+    const int maxiter = 1000;
+    const int xres = 1024;
     const int yres = (xres*(ymax-ymin))/(xmax-xmin);
 
     // Allocated an array for colors = width * height * 6 byte color code
@@ -111,7 +100,7 @@ int main(int argc, char* argv[])
     printf("Computation took %lu ms\n", (stop.tv_sec - start.tv_sec) * 1000 + (stop.tv_usec/1000) - (start.tv_usec/1000)); 
 
     // Write resulting colors to file
-    write_file(argv[7], colors, colors_len, xmin, xmax, ymin, ymax, maxiter, xres, yres);
+    write_file("pic.ppm", colors, colors_len, xmin, xmax, ymin, ymax, maxiter, xres, yres);
 
     // Free up allocated memor
     free(colors);

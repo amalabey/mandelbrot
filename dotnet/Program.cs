@@ -34,18 +34,18 @@ namespace dotnet
             char[] colours = new char[colorsLength];
 
             // Calculate width and height
-            double pixelWidth = (xmax - xmin)/xres;
-            double pixelHeight = (ymax-ymin)/yres;
+            double pixelWidth = (xmax - xmin)/(double)xres;
+            double pixelHeight = (ymax-ymin)/(double)yres;
 
             double currentX, currentY; // Current point in the complex plane
             int xPixel, yPixel;
 
             for (yPixel = 0; yPixel < yres; yPixel++)
             {
-                currentY = ymax - (yPixel*pixelHeight);
+                currentY = ymax - ((double)yPixel*pixelHeight);
                 for (xPixel = 0; xPixel < xres; xPixel++)
                 {
-                    currentX = xmin + (xPixel*pixelWidth);
+                    currentX = xmin + ((double)xPixel*pixelWidth);
                     int iterations = GetIterations(maxiter, currentX, currentY);
                     
                     int colorIndex = (yPixel*xres*6)+(xPixel*6);
@@ -57,6 +57,7 @@ namespace dotnet
                     }else
                     {
                         char[] color = new char[6];
+                        
                         color[0] = (char)(iterations >> 8);
                         color[1] = (char)(iterations & 255);
                         color[2] = (char)(iterations >> 8);
@@ -92,21 +93,13 @@ namespace dotnet
 
         public static void Main(string[] args)
         {
-            if (args.Length != 7) {
-                Console.WriteLine("Usage:   dotnet run <xmin> <xmax> <ymin> <ymax> <maxiter> <xres> <out.ppm>\n");
-                Console.WriteLine("Example: dotnet run 0.27085 0.27100 0.004640 0.004810 1000 1024 pic.ppm\n");
-                return;
-            }
-
-            // var test = GetIterations(1000, 0.27085004999999995, 0.00481);
-
-            double xmin = Double.Parse(args[0]);
-            double xmax = Double.Parse(args[1]);
-            double ymin = Double.Parse(args[2]);
-            double ymax = Double.Parse(args[3]);
-            int maxiter = Int16.Parse(args[4]);
-            int xres = Int32.Parse(args[5]);
-            string fileName = args[6];
+            double xmin = -2.0D;
+            double xmax = 1.0D;
+            double ymin = -1.0D;
+            double ymax = 1.0D;
+            int maxiter = 1000;
+            int xres = 1024;
+            string fileName = "pic.ppm";
             int yres = (int)((xres*(ymax-ymin))/(xmax-xmin));
 
             var stopWatch = new System.Diagnostics.Stopwatch();
