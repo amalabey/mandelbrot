@@ -47,7 +47,8 @@ if __name__ == "__main__":
     pixels = img.load() 
     start = datetime.now()
     print("Starting computation")
-    # Computation took: 203966ms
+    # CPython = Computation took: 203966ms
+    # PYPY = Computation took: 146862ms
     compute_set(xmin, xmax, ymin, ymax, maxiter, xres, yres, img, pixels)
     print("Completed computation")
     end = datetime.now()
