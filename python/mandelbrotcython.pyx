@@ -12,12 +12,14 @@ def get_iterations(int maxiter, double x, double y):
         c = c * c + c0
     return maxiter
 
-def compute_set(xmin, xmax, ymin, ymax, maxiter, xres, yres, img, pixels):
-    pixelWidth = (xmax - xmin)/xres
-    pixelHeight = (ymax-ymin)/yres
+def compute_set(double xmin, double xmax, double ymin, double ymax, int maxiter, int xres, int yres, img, pixels):
+    cdef double pixelWidth = (xmax - xmin)/xres
+    cdef double pixelHeight = (ymax-ymin)/yres
 
-    currentX = 0
-    currentY = 0
+    cdef double currentX = 0
+    cdef double currentY = 0
+    cdef int x = 0
+    cdef int y = 0
 
     for x in range(img.size[0]): 
         currentX = xmin + x*pixelWidth
