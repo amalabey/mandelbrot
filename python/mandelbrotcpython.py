@@ -31,29 +31,28 @@ def compute_set(xmin, xmax, ymin, ymax, maxiter, xres, yres, img, pixels):
                 pixels[x,y] =  tuple(color.astype(int))
 
 
-if __name__ == "__main__":
-    xmin = -2.0
-    xmax = 1.0
-    ymin = -1.0
-    ymax = 1.0
-    maxiter = 1000
-    xres = 3000
-    yres = int((xres*(ymax-ymin))/(xmax-xmin))
+xmin = -2.0
+xmax = 1.0
+ymin = -1.0
+ymax = 1.0
+maxiter = 1000
+xres = 3000
+yres = int((xres*(ymax-ymin))/(xmax-xmin))
 
-    # creating the new image in RGB mode 
-    img = Image.new('RGB', (xres, yres))
-    pixels = img.load()
+# creating the new image in RGB mode 
+img = Image.new('RGB', (xres, yres))
+pixels = img.load()
 
-    pixels = img.load() 
-    start = datetime.now()
-    print("Starting computation")
-    # CPython = Computation took: 203966ms
-    # PYPY = Computation took: 146862ms
-    compute_set(xmin, xmax, ymin, ymax, maxiter, xres, yres, img, pixels)
-    print("Completed computation")
-    end = datetime.now()
-    timediff = (end - start)
-    print("Computation took: {0}ms".format((timediff.seconds * 1000)+(timediff.microseconds/1000)))
-    img.save("pic.png")
+pixels = img.load() 
+start = datetime.now()
+print("Starting computation")
+# CPython = Computation took: 203966ms
+# PYPY = Computation took: 146862ms
+compute_set(xmin, xmax, ymin, ymax, maxiter, xres, yres, img, pixels)
+print("Completed computation")
+end = datetime.now()
+timediff = (end - start)
+print("Computation took: {0}ms".format((timediff.seconds * 1000)+(timediff.microseconds/1000)))
+img.save("pic.png")
 
 
