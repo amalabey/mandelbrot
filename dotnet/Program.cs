@@ -98,7 +98,7 @@ namespace dotnet
             double ymin = -1.0D;
             double ymax = 1.0D;
             int maxiter = 1000;
-            int xres = 3000;
+            int xres = 1000;
             string fileName = "pic.ppm";
             int yres = (int)((xres*(ymax-ymin))/(xmax-xmin));
 

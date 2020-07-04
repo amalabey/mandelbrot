@@ -60,7 +60,7 @@ xmax = 1.0
 ymin = -1.0
 ymax = 1.0
 maxiter = 1000
-xres = 3000
+xres = 1000
 yres = int((xres*(ymax-ymin))/(xmax-xmin))
 
 start = datetime.now()
