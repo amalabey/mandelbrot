@@ -1,17 +1,23 @@
 from datetime import datetime
 import numpy as np
-from numpy import complex 
 
 COLOURS_PER_PIXEL = 6  
 
 def get_iterations(maxiter, x, y):
-    c0 = complex(x, y) 
-    c = 0
-    for i in range(1, maxiter): 
-        if abs(c) > 4: 
-            return i
-        c = c * c + c0
-    return maxiter
+    iterX = 0.0
+    iterY = 0.0
+    iterX2 = iterX * iterX
+    iterY2 = iterY * iterY
+
+    k = 1
+    while k < maxiter and ((iterX2 + iterY2) < 4.0):
+        iterY = (2 * iterX * iterY) + y
+        iterX = iterX2 - iterY2 + x
+        iterX2 = iterX * iterX
+        iterY2 = iterY * iterY
+        k += 1
+
+    return k
 
 def compute_set(xmin, xmax, ymin, ymax, maxiter, xres, yres):
     colorsLength = yres * xres * COLOURS_PER_PIXEL
