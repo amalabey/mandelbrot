@@ -80,4 +80,4 @@ print("Computation took: {0}ms".format((timediff.seconds * 1000)+(timediff.micro
 file_name = "pic.ppm"
 colour_depth = 256 if maxiter < 256 else maxiter
 headerText = "P6\n# Mandelbrot, xmin={0}, xmax={1}, ymin={2}, ymax={3}, maxiter={4}\n{5}\n{6}\n{7}\n".format(xmin, xmax, ymin, ymax, maxiter, xres, yres, colour_depth)
-write_file(filep_name, headerText, colours)
+write_file(file_name, headerText, colours)
