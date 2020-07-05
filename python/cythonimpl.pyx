@@ -5,13 +5,20 @@ from numpy import complex, array
 COLOURS_PER_PIXEL = 6  
 
 def get_iterations(int maxiter, double x, double y):
-    cdef double complex c0 = complex(x, y) 
-    cdef double complex c = 0
-    for i in range(1, maxiter): 
-        if abs(c) > 4: 
-            return i
-        c = c * c + c0
-    return maxiter
+    cdef double iterX = 0.0
+    cdef double iterY = 0.0
+    cdef double iterX2 = iterX * iterX
+    cdef double iterY2 = iterY * iterY
+
+    cdef int k = 1
+    while k < maxiter and ((iterX2 + iterY2) < 4.0):
+        iterY = (2 * iterX * iterY) + y
+        iterX = iterX2 - iterY2 + x
+        iterX2 = iterX * iterX
+        iterY2 = iterY * iterY
+        k += 1
+
+    return k
 
 def compute_set(double xmin, double xmax, double ymin, double ymax, int maxiter, int xres, int yres):
     cdef long colorsLength = yres * xres * COLOURS_PER_PIXEL
@@ -60,13 +67,11 @@ xmax = 1.0
 ymin = -1.0
 ymax = 1.0
 maxiter = 1000
-xres = 1000
+xres = 2000
 yres = int((xres*(ymax-ymin))/(xmax-xmin))
 
 start = datetime.now()
-print("Starting computation")
 colours = compute_set(xmin, xmax, ymin, ymax, maxiter, xres, yres)
-print("Completed computation")
 end = datetime.now()
 timediff = (end - start)
 print("Computation took: {0}ms".format((timediff.seconds * 1000)+(timediff.microseconds/1000)))
@@ -74,6 +79,4 @@ print("Computation took: {0}ms".format((timediff.seconds * 1000)+(timediff.micro
 file_name = "pic.ppm"
 colour_depth = 256 if maxiter < 256 else maxiter
 headerText = "P6\n# Mandelbrot, xmin={0}, xmax={1}, ymin={2}, ymax={3}, maxiter={4}\n{5}\n{6}\n{7}\n".format(xmin, xmax, ymin, ymax, maxiter, xres, yres, colour_depth)
-print("Saving to file: {0}".format(file_name))
 write_file(file_name, headerText, colours)
-print("done..")
