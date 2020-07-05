@@ -1,29 +1,43 @@
 {
-   // Use IntelliSense to find out which attributes exist for C# debugging
-   // Use hover for the description of the existing attributes
-   // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
-   "version": "0.2.0",
-   "configurations": [
-   {
-       "name": "Launch C (gdb)",
-       "type": "cppdbg",
-       "request": "launch",
-       "program": "${workspaceFolder}/c/mandelbrot",
-       "args": ["0.27084999999999998", "0.27100000000000002", "0.004640", "0.004810", "1000", "3000", "pic.ppm"],
-       "stopAtEntry": false,
-       "cwd": "${workspaceFolder}",
-       "environment": [],
-       "externalConsole": false,
-       "MIMode": "gdb",
-       "setupCommands": [
-           {
-               "description": "Enable pretty-printing for gdb",
-               "text": "-enable-pretty-printing",
-               "ignoreFailures": true
-           }
-       ]
-   },
-
+    // Use IntelliSense to find out which attributes exist for C# debugging
+    // Use hover for the description of the existing attributes
+    // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Launch C (gdb)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/c/mandelbrot",
+            "args": [
+                "0.27084999999999998",
+                "0.27100000000000002",
+                "0.004640",
+                "0.004810",
+                "1000",
+                "3000",
+                "pic.ppm"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
         {
             "name": "Launch dotnetcore",
             "type": "coreclr",
@@ -31,7 +45,15 @@
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/dotnet/bin/Debug/netcoreapp3.1/dotnet.dll",
-            "args": ["0.27084999999999998", "0.27100000000000002", "0.004640", "0.004810", "1000", "3000", "pic.ppm"],
+            "args": [
+                "0.27084999999999998",
+                "0.27100000000000002",
+                "0.004640",
+                "0.004810",
+                "1000",
+                "3000",
+                "pic.ppm"
+            ],
             "cwd": "${workspaceFolder}/dotnet",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
