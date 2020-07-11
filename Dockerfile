@@ -19,3 +19,17 @@ RUN tar -xvf pypy3.6-v7.3.1-linux64.tar.bz2
 RUN ln -s /pypy3.6-v7.3.1-linux64/bin/pypy3 /usr/bin/pypy3
 RUN pypy3 -m ensurepip
 RUN pypy3 -m pip install numpy
+
+# Copy source files
+WORKDIR /app
+COPY . .
+
+# Compile, compilable implementations
+WORKDIR /app/c
+RUN gcc -g -o mandelbrot mandelbrot.c
+WORKDIR /app/python
+RUN python3 setup.py build_ext --inplace
+
+# Run
+WORKDIR /app
+ENTRYPOINT ./run.sh

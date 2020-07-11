@@ -1,22 +1,10 @@
-# Pre-requisites
-- GCC for C example
-- .NET Core 3.1 for C#
-- PyPy: `sudo apt install pypy3`
-- Numba: `pip3 install numba`
-- Numpy: `pip3 install numpy`
-- Cython: `pip3 install cython`
+# Get started
+Refer to the `Dockerfile` for all dependencies and how to build a container with all pre-requsites.
 
-# Compile Examples
-- Compile "C":
-    ```
-    cd c
-    gcc -g -o mandelbrot mandelbrot.c
-    ```
-- Compile "Cython":
-    ```
-    cd python
-    python3 setup.py build_ext --inplace
-    ```
+Quick start using Docker:
+```
+docker run --rm -it amalabey/mandelbrot:v0.1.5 bash
+```
 
 # Run Examples
 ```
